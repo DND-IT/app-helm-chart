@@ -1,0 +1,48 @@
+# App specific configs
+scale: 1
+port: 80
+# ["bundle", "exec", "rake", "db:create", "db:migrate"]
+# command: []
+command: []
+# ["db:create", "db:migrate"]
+args: []
+env: {}
+
+image_repo: nginx
+image_tag: stable
+image_pull_policy: IfNotPresent
+
+probe:
+  liveness: /
+  readiness: /
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+
+
+# Activated by setting at least one host
+ingress:
+  annotations:
+  hosts: []
+  paths: ['/']
+  tls: false
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

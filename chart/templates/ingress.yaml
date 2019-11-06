@@ -1,0 +1,34 @@
+{{- if .Values.ingress.hosts -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    type: {{ .Chart.Name }}
+    app: {{ .Release.Name }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+    - hosts:
+      {{- .Values.ingress.hosts | toYaml | nindent 8 }}
+      secretName: {{ .Release.Name }}-tls
+{{- end }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ . | quote }}
+      http:
+        paths:
+        {{- range $.Values.ingress.paths }}
+          - path: {{ . }}
+            backend:
+              serviceName: {{ $.Values.service.name }}
+              servicePort: http
+        {{- end }}
+  {{- end }}
+{{- end }}

@@ -1,4 +1,4 @@
-{{- if .Values.aws-iam-role-arn  }}
+{{- if .Values.aws-iam-role-arn  -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:

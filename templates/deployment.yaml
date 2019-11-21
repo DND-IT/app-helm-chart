@@ -19,6 +19,9 @@ spec:
         type: {{ .Chart.Name }}
         app: {{ .Release.Name }}
     spec:
+      {{- if .Values.aws_iam_role_arn }}
+      serviceAccountName: {{ .Release.Name }}
+      {{- end }}
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image_repo }}:{{ .Values.image_tag }}"

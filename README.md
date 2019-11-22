@@ -7,7 +7,7 @@ Reference the release of the chart you want to deploy in terraform
 
 ```hcl
 resource "helm_release" "app" {
-  chart     = "https://github.com/DND-IT/app-helm-chart/archive/0.0.2.tar.gz"
+  chart     = "https://github.com/DND-IT/app-helm-chart/archive/0.1.0.tar.gz"
   ...
 }
 ```

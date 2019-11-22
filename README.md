@@ -1,5 +1,5 @@
-# webapp-helm-chart
-Contains the generic helm chart for a web application. It is used by Prometheus & Disco project
+# app-helm-chart
+Contains the generic helm chart for an application. It is used by Prometheus & Disco project
 
 ## Usage
 
@@ -7,7 +7,7 @@ Reference the release of the chart you want to deploy in terraform
 
 ```hcl
 resource "helm_release" "app" {
-  chart     = "https://github.com/DND-IT/webapp-helm-chart/archive/0.0.2.tar.gz"
+  chart     = "https://github.com/DND-IT/app-helm-chart/archive/0.0.2.tar.gz"
   ...
 }
 ```

@@ -21,6 +21,8 @@ spec:
     spec:
       {{- if .Values.aws_iam_role_arn }}
       serviceAccountName: {{ .Release.Name }}
+      securityContext:
+        fsGroup: 65534 # To be able to read Kubernetes and AWS token files
       {{- end }}
       containers:
         - name: {{ .Release.Name }}

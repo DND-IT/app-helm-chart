@@ -1,5 +1,10 @@
 # App specific configs
-scale: 1
+scale:
+  minReplicas: 1
+  maxReplicas: 10
+  cpuThresholdPercentage: 60
+  memoryThresholdPercentage: 60
+
 port: 80
 # ["bundle", "exec", "rake", "db:create", "db:migrate"]
 # command: []
@@ -21,7 +26,6 @@ service:
   type: ClusterIP
   port: 80
 
-
 # Activated by setting at least one host
 ingress:
   annotations:
@@ -40,6 +44,8 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+
 
 nodeSelector: {}
 

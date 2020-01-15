@@ -19,6 +19,11 @@ spec:
         type: {{ .Chart.Name }}
         app: {{ .Release.Name }}
     spec:
+      {{- if .Values.aws_iam_role_arn }}	
+      serviceAccountName: {{ .Release.Name }}	
+      securityContext:	
+        fsGroup: 65534 # To be able to read Kubernetes and AWS token files	
+      {{- end }}
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image_repo }}:{{ .Values.image_tag }}"

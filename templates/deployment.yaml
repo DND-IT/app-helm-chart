@@ -8,7 +8,7 @@ metadata:
     type: {{ .Chart.Name }}
     app: {{ .Release.Name }}
 spec:
-  replicas: {{ .Values.scale }}
+  replicas: {{ .Values.scale.minReplicas }}
   selector:
     matchLabels:
       type: {{ .Chart.Name }}
@@ -19,10 +19,10 @@ spec:
         type: {{ .Chart.Name }}
         app: {{ .Release.Name }}
     spec:
-      {{- if .Values.aws_iam_role_arn }}
-      serviceAccountName: {{ .Release.Name }}
-      securityContext:
-        fsGroup: 65534 # To be able to read Kubernetes and AWS token files
+      {{- if .Values.aws_iam_role_arn }}	
+      serviceAccountName: {{ .Release.Name }}	
+      securityContext:	
+        fsGroup: 65534 # To be able to read Kubernetes and AWS token files	
       {{- end }}
       containers:
         - name: {{ .Release.Name }}

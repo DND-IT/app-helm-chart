@@ -1,0 +1,80 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    type: {{ .Chart.Name }}
+    app: {{ .Release.Name }}
+spec:
+  schedule: {{ .Values.cronjob.schedule }}
+  jobTemplate:
+    spec:
+      replicas: {{ .Values.scale.minReplicas }}
+      selector:
+        matchLabels:
+          type: {{ .Chart.Name }}
+          app: {{ .Release.Name }}
+      template:
+        metadata:
+          labels:
+            type: {{ .Chart.Name }}
+            app: {{ .Release.Name }}
+        spec:
+          {{- if .Values.aws_iam_role_arn }}	
+          serviceAccountName: {{ .Release.Name }}	
+          securityContext:	
+            fsGroup: 65534 # To be able to read Kubernetes and AWS token files	
+          {{- end }}
+          containers:
+            - name: {{ .Release.Name }}
+              image: "{{ .Values.image_repo }}:{{ .Values.image_tag }}"
+              imagePullPolicy: {{ .Values.image_pull_policy }}
+              {{- if .Values.command }}
+              command:
+                {{- .Values.command | toYaml | nindent 12 }}
+              {{- end }}
+              {{- if .Values.args }}
+              args:
+                {{- .Values.args | toYaml | nindent 12 }}
+              {{- end }}
+              env:
+                - name: PORT
+                  value: {{ .Values.port | quote  }}
+              {{- if .Values.env }}
+              {{- range $key, $val := .Values.env }}
+                - name: {{ $key }}
+                  value: {{ $val | quote }}
+              {{- end }}
+              {{- end }}
+              ports:
+                - name: http
+                  containerPort: {{ .Values.port }}
+                  protocol: TCP
+              {{- if .Values.probe.liveness }}
+              livenessProbe:
+                httpGet:
+                  path: {{ .Values.probe.liveness | quote }}
+                  port: http
+              {{- end }}
+              {{- if .Values.probe.readiness }}
+              readinessProbe:
+                httpGet:
+                  path: {{ .Values.probe.readiness | quote }}
+                  port: http
+              {{- end }}
+              resources:
+                {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}

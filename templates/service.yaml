@@ -1,4 +1,4 @@
-{{- if .Values.service.enabled }}
+{{- if and (eq .Values.service.enabled true) (eq .Values.cronjob.enabled false) }}
 apiVersion: v1
 kind: Service
 metadata:

@@ -33,6 +33,11 @@ ingress:
   paths: ['/']
   tls: false
 
+cronjob:
+  enable: false
+  schedule : /
+
+
 cron:
   schedule: #TOCHECK
 

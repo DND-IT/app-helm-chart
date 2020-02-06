@@ -1,4 +1,4 @@
-{{- if .Values.ingress.hosts -}}
+{{- if and (.Values.ingress.hosts) (eq .Values.cronjob.enabled false) -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

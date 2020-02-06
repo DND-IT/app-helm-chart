@@ -1,3 +1,4 @@
+{{- if eq .Values.cronjob.enabled true -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -78,3 +79,4 @@ spec:
           tolerations:
             {{- toYaml . | nindent 8 }}
         {{- end }}
+{{- end }}

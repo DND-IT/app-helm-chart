@@ -1,4 +1,3 @@
-{{- if and (.Values.ingress.hosts) (eq .Values.cronjob.enabled false) -}}
 {{- if eq .Values.cronjob.enabled false -}}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler

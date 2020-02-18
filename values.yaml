@@ -19,11 +19,11 @@ image_pull_policy: IfNotPresent
 
 probe:
   liveness: /
-  livenessInitialDelaySeconds: 0
-  livenessPeriodSeconds: 10
+  livenessInitialDelaySeconds: 10
+  livenessPeriodSeconds: 15
   readiness: /
-  readinessInitialDelaySeconds: 0
-  readinessPeriodSeconds: 10
+  readinessInitialDelaySeconds: 10
+  readinessPeriodSeconds: 15
 
 service:
   enabled: true

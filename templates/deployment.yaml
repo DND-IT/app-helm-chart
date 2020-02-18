@@ -54,16 +54,16 @@ spec:
             httpGet:
               path: {{ .Values.probe.liveness | quote }}
               port: http
-            initialDelaySeconds: 15
-            periodSeconds: 20
+            initialDelaySeconds: {{ .Values.probe.livenessInitialDelaySeconds | quote }}
+            periodSeconds: {{ .Values.probe.livenessPeriodSeconds | quote }}
           {{- end }}
           {{- if .Values.probe.readiness }}
           readinessProbe:
             httpGet:
               path: {{ .Values.probe.readiness | quote }}
               port: http
-            initialDelaySeconds: 10
-            periodSeconds: 15
+            initialDelaySeconds: {{ .Values.probe.readinessInitialDelaySeconds | quote }}
+            periodSeconds: {{ .Values.probe.readinessPeriodSeconds | quote }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -20,6 +20,7 @@ image_pull_policy: IfNotPresent
 probe:
   liveness: /
   readiness: /
+  readinessInitialDelaySeconds: 0
 
 service:
   enabled: true

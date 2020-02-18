@@ -60,7 +60,7 @@ spec:
             httpGet:
               path: {{ .Values.probe.readiness | quote }}
               port: http
-            initialDelaySeconds: {{ .Values.probe.readinessInitialDelaySeconds | quote }}
+            initialDelaySeconds: 10
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

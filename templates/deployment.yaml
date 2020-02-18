@@ -54,6 +54,8 @@ spec:
             httpGet:
               path: {{ .Values.probe.liveness | quote }}
               port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
           {{- end }}
           {{- if .Values.probe.readiness }}
           readinessProbe:
@@ -61,6 +63,7 @@ spec:
               path: {{ .Values.probe.readiness | quote }}
               port: http
             initialDelaySeconds: 10
+            periodSeconds: 15
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

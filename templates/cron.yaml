@@ -10,9 +10,8 @@ metadata:
     app: {{ .Release.Name }}
 spec:
   schedule: {{ .Values.cronjob.schedule }}
-  jobTemplate:
+  jobTemplate:  
     spec:
-      replicas: {{ .Values.scale.minReplicas }}
       selector:
         matchLabels:
           type: {{ .Chart.Name }}

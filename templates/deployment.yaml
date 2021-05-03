@@ -7,6 +7,11 @@ metadata:
     heritage: {{ .Release.Service }}
     type: {{ .Chart.Name }}
     app: {{ .Release.Name }}
+    {{- if .Values.metadata.labels.datadog }}	
+    tags.datadoghq.com/env: {{ .Values.metadata.labels.datadog.env }}	
+    tags.datadoghq.com/service: {{ .Values.metadata.labels.datadog.service }}	
+    tags.datadoghq.com/version: {{ .Values.metadata.labels.datadog.version }}	
+    {{- end }}
 spec:
   replicas: {{ .Values.scale.minReplicas }}
   selector:
@@ -18,6 +23,11 @@ spec:
       labels:
         type: {{ .Chart.Name }}
         app: {{ .Release.Name }}
+        {{- if .Values.metadata.labels.datadog }}	
+        tags.datadoghq.com/env: {{ .Values.metadata.labels.datadog.env }}	
+        tags.datadoghq.com/service: {{ .Values.metadata.labels.datadog.service }}	
+        tags.datadoghq.com/version: {{ .Values.metadata.labels.datadog.version }}	
+        {{- end }}
     spec:
       {{- if .Values.aws_iam_role_arn }}	
       serviceAccountName: {{ .Release.Name }}	

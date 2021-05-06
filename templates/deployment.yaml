@@ -27,10 +27,14 @@ spec:
       labels:
         type: {{ .Chart.Name }}
         app: {{ .Release.Name }}
-        {{- if .Values.metadata.labels.datadog }}	
-        tags.datadoghq.com/env: {{ .Values.metadata.labels.datadog.env }}	
-        tags.datadoghq.com/service: {{ .Values.metadata.labels.datadog.service }}	
-        tags.datadoghq.com/version: {{ .Values.metadata.labels.datadog.version }}	
+        {{- if .Values.metadata.labels.datadog.env }}	
+        tags.datadoghq.com/env: {{ .Values.metadata.labels.datadog.env }}
+        {{- end }}
+        {{- if .Values.metadata.labels.datadog.service }}	
+        tags.datadoghq.com/service: {{ .Values.metadata.labels.datadog.service }}
+        {{- end }}
+        {{- if .Values.metadata.labels.datadog.version }}	
+        tags.datadoghq.com/version: {{ .Values.metadata.labels.datadog.version }}
         {{- end }}
     spec:
       {{- if .Values.aws_iam_role_arn }}	
@@ -53,6 +57,24 @@ spec:
           env:
             - name: PORT
               value: {{ .Values.port | quote  }}
+            {{- if .Values.metadata.labels.datadog.env }}	
+            - name: DD_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/env']
+            {{- end }}
+            {{- if .Values.metadata.labels.datadog.service }}	
+            - name: DD_SERVICE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/service']
+            {{- end }}
+            {{- if .Values.metadata.labels.datadog.version }}	
+            - name: DD_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/version']
+            {{- end }}
           {{- if .Values.env }}
           {{- range $key, $val := .Values.env }}
             - name: {{ $key }}

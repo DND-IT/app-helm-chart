@@ -54,3 +54,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+metadata:
+  labels:
+    datadog:
+      env: ""
+      service: ""
+      version: ""

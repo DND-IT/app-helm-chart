@@ -69,4 +69,4 @@ topologySpreadConstraints:
   # -- The key of node labels.
   # See https://kubernetes.io/docs/reference/kubernetes-api/labels-annotations-taints/
   topologyKey: "kubernetes.io/hostname"
-  whenUnsatisfiable: DoNotSchedule
+  whenUnsatisfiable: ScheduleAnyway

@@ -27,8 +27,10 @@ spec:
         {{- range $.Values.ingress.paths }}
           - path: {{ . }}
             backend:
-              serviceName: {{ $.Values.service.name }}
-              servicePort: http
+              service:
+                name: {{ $.Values.service.name }}
+              port:
+                number: 80
         {{- end }}
   {{- end }}
 {{- end }}

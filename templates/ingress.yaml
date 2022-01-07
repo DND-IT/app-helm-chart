@@ -31,7 +31,7 @@ spec:
               service:
                 name: {{ $.Values.service.name }}
                 port:
-                  number: http
+                  number: {{ $.Values.service.port }}
         {{- end }}
   {{- end }}
 {{- end }}

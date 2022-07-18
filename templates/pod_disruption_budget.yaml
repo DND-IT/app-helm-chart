@@ -1,0 +1,12 @@
+{{- if .Values.scale.minReplicas > 1 }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  minAvailable: {{ .Values.scale.minAvailable }}
+  selector:
+    matchLabels:
+      type: {{ .Chart.Name }}
+      app: {{ .Release.Name }}
+{{- end }}

@@ -63,10 +63,10 @@ metadata:
       version: ""
 
 topologySpreadConstraints: 
-  enable: false
+  enable: true
   # -- Enable pod [Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
   maxSkew: 1
   # -- The key of node labels.
   # See https://kubernetes.io/docs/reference/kubernetes-api/labels-annotations-taints/
-  topologyKey: "kubernetes.io/hostname"
+  topologyKey: "topology.kubernetes.io/zone"
   whenUnsatisfiable: ScheduleAnyway

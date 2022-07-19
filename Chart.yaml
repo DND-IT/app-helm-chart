@@ -3,3 +3,5 @@ appVersion: "1.0"
 description: A generic application chart with one deployment
 name: webapp
 version: 1.0.0
+maintainers:
+  - name: DAI

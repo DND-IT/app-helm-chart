@@ -63,7 +63,7 @@ metadata:
       service: ""
       version: ""
 
-topologySpreadConstraints: 
+topologySpreadConstraints:
   enable: true
   # -- Enable pod [Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
   maxSkew: 1

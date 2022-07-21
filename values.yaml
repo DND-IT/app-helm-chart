@@ -22,9 +22,11 @@ probe:
   liveness: /
   livenessInitialDelaySeconds: 0
   livenessPeriodSeconds: 10
+  livenessTimeoutSeconds: 2
   readiness: /
   readinessInitialDelaySeconds: 0
   readinessPeriodSeconds: 10
+  readinessTimeoutSeconds: 2
 
 service:
   enabled: true

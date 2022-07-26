@@ -92,6 +92,7 @@ spec:
               port: http
             initialDelaySeconds: {{ .Values.probe.livenessInitialDelaySeconds }}
             periodSeconds: {{ .Values.probe.livenessPeriodSeconds }}
+            timeoutSeconds: {{ .Values.probe.livenessTimeoutSeconds }}
           {{- end }}
           {{- if .Values.probe.readiness }}
           readinessProbe:
@@ -100,6 +101,19 @@ spec:
               port: http
             initialDelaySeconds: {{ .Values.probe.readinessInitialDelaySeconds }}
             periodSeconds: {{ .Values.probe.readinessPeriodSeconds }}
+            timeoutSeconds: {{ .Values.probe.readinessTimeoutSeconds }}
+          {{- end }}
+          # Let's add startup probe only if there is already a liveness defined without requiring new values on application side
+          {{- if .Values.probe.liveness }}
+          startupProbe:
+            httpGet:
+              path: {{ .Values.probe.liveness | quote }}
+              port: http
+            # This means that by default, any application who doesn't respond after 6*20 seconds (2 minutes) gets killed and restarted
+            # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway 
+            failureThreshold: 20
+            periodSeconds: 6
+            timeoutSeconds: 2
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

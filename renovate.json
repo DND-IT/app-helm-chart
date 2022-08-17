@@ -1,0 +1,18 @@
+ {
+    "extends": ["config:base", "schedule:nonOfficeHours"],
+    "enabledManagers": ["dockerfile", "terraform", "github-actions", "circleci"],
+    "updateNotScheduled": false,
+    "commitBodyTable": true,
+    "assigneesFromCodeOwners": true,
+    "dependencyDashboard": true,
+    "ignoreDeprecated": true,
+    "ignoreUnstable": true,
+    "reviewersFromCodeOwners": true,
+    "prCreation": "immediate",
+    "packageRules": [
+        {
+          "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+          "automerge": false
+        }
+    ]
+}

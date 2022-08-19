@@ -1,5 +1,6 @@
 {
-    "extends": ["config:base", "schedule:nonOfficeHours"],
+    "extends": ["config:base", "schedule:nonOfficeHours", ":preserveSemverRanges"],
+    "reviewers": ["team:DAI-Team"],
     "enabledManagers": ["dockerfile", "terraform", "github-actions", "circleci"],
     "updateNotScheduled": false,
     "commitBodyTable": true,

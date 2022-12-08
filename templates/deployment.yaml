@@ -102,6 +102,7 @@ spec:
             initialDelaySeconds: {{ .Values.probe.readinessInitialDelaySeconds }}
             periodSeconds: {{ .Values.probe.readinessPeriodSeconds }}
             timeoutSeconds: {{ .Values.probe.readinessTimeoutSeconds }}
+            failureThreshold: {{ .Values.probe.readinessFailureThreshold }}
           {{- end }}
           # Let's add startup probe only if there is already a liveness defined without requiring new values on application side
           {{- if .Values.probe.liveness }}

@@ -8,13 +8,15 @@ spec:
   maxReplicas: {{ .Values.scale.maxReplicas }}
   metrics:
     - resource:
-        name: memory
-        targetAverageUtilization: {{ .Values.scale.memoryThresholdPercentage }}
-      type: Resource
-    - resource:
         name: cpu
         targetAverageUtilization: {{ .Values.scale.cpuThresholdPercentage }}
       type: Resource
+    {{- if .Values.scale.memoryThresholdPercentage }}
+    - resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.scale.memoryThresholdPercentage }}
+      type: Resource
+    {{- end }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment

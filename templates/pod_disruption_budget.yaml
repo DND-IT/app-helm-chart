@@ -1,4 +1,4 @@
-{{- if .Values.scale.minReplicas -}}
+{{- if .Values.scale.enavlePdb -}}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

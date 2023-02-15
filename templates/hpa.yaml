@@ -1,4 +1,4 @@
-{{- if .Values.scale.maxReplicas -}}
+{{- if .Values.scale.enableHpa -}}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:

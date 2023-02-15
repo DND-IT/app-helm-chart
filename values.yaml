@@ -1,5 +1,7 @@
 # App specific configs
 scale:
+  enableHpa: True
+  enablePdb: True
   minReplicas: 1
   maxReplicas: 10
   minAvailable: 50%

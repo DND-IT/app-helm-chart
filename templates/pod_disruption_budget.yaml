@@ -1,4 +1,4 @@
-{{- if gt .Values.scale.minReplicas '1' }}
+{{- if .Values.scale.minReplicas -}}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

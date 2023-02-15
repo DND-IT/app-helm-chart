@@ -1,4 +1,4 @@
-{{- if gt .Values.scale.maxReplicas '1' }}
+{{- if .Values.scale.maxReplicas -}}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:

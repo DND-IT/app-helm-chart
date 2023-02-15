@@ -2,6 +2,7 @@
 scale:
   enableHpa: true
   enablePdb: true
+  enableMemThreshold: true
   minReplicas: 1
   maxReplicas: 10
   minAvailable: 50%

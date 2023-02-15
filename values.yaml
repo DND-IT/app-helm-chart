@@ -1,7 +1,7 @@
 # App specific configs
 scale:
-  enableHpa: True
-  enablePdb: True
+  enableHpa: true
+  enablePdb: true
   minReplicas: 1
   maxReplicas: 10
   minAvailable: 50%
@@ -35,6 +35,7 @@ service:
   enabled: true
   type: ClusterIP
   port: 80
+  name: nginx
 
 # Activated by setting at least one host
 ingress:

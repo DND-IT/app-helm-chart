@@ -8,11 +8,13 @@ spec:
   minReplicas: {{ .Values.scale.minReplicas }}
   maxReplicas: {{ .Values.scale.maxReplicas }}
   metrics:
-    {{- if and .Values.scale.memoryThresholdPercentage (ne .Values.scale.memoryThresholdPercentage "null") }}
+    {{- if kindIs "int64" .Values.scale.memoryThresholdPercentage }}
+    {{- if ne .Values.scale.memoryThresholdPercentage -1 }}
     - resource:
         name: memory
         targetAverageUtilization: {{ .Values.scale.memoryThresholdPercentage }}
       type: Resource
+    {{- end }}
     {{- end }}
     - resource:
         name: cpu

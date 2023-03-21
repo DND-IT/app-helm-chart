@@ -130,13 +130,13 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if .Values.topologySpreadConstraints.enable }}
+    {{- if .Values.topologySpreadConstraints.enabled }}
       topologySpreadConstraints: 
         - labelSelector:
             matchLabels:
               app: {{ .Release.Name }}
               type: {{ .Chart.Name }}
-          maxSkew: {{ .Values.topologySpreadConstraints.maxSkew  }}
-          topologyKey: {{ .Values.topologySpreadConstraints.topologyKey  | quote  }}
+          maxSkew: {{ .Values.topologySpreadConstraints.maxSkew }}
+          topologyKey: {{ .Values.topologySpreadConstraints.topologyKey | quote }}
           whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable }}
     {{- end }}

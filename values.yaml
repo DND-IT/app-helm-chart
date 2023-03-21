@@ -1,8 +1,6 @@
 # App specific configs
 scale:
-  enableHpa: true
-  enablePdb: true
-  enableMemThreshold: true
+  enabled: true
   minReplicas: 1
   maxReplicas: 10
   minAvailable: 50%
@@ -71,7 +69,7 @@ metadata:
       version: ""
 
 topologySpreadConstraints:
-  enable: true
+  enabled: true
   # -- Enable pod [Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
   maxSkew: 1
   # -- The key of node labels.

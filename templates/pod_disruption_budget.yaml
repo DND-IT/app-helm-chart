@@ -1,4 +1,4 @@
-{{- if .Values.scale.enablePdb }}
+{{- if gt .Values.scale.minReplicas 1 }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

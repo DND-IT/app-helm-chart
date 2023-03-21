@@ -1,4 +1,5 @@
-{{- if gt .Values.scale.minReplicas 1.0 }}
+{{- if kindIs "int64" .Values.scale.minReplicas }}
+{{- if gt .Values.scale.minReplicas 1 }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -9,4 +10,5 @@ spec:
     matchLabels:
       type: {{ .Chart.Name }}
       app: {{ .Release.Name }}
+{{- end }}
 {{- end }}

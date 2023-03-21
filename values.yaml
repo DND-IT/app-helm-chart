@@ -5,7 +5,7 @@ scale:
   maxReplicas: 10
   minAvailable: 50%
   cpuThresholdPercentage: 60
-  memoryThresholdPercentage: 60  # Can be unset via -1 or any other value (non-int64)
+  memoryThresholdPercentage: -1  # -1 means "unset". Use positive integer to enable it.
 
 port: 80
 # ["bundle", "exec", "rake", "db:create", "db:migrate"]

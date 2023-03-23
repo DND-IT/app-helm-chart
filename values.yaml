@@ -4,7 +4,7 @@ scale:
   minReplicas: 1
   maxReplicas: 10
   minAvailable: 50%
-  cpuThresholdPercentage: 60
+  cpuThresholdPercentage: 100
   memoryThresholdPercentage: -1  # -1 means "unset". Use positive integer to enable it.
 
 port: 80

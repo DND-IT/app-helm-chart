@@ -15,8 +15,8 @@ command: []
 args: []
 env: {}
 
-image_repo: nginx
-image_tag: stable
+image_repo:
+image_tag:
 image_pull_policy: IfNotPresent
 
 probe:
@@ -34,7 +34,7 @@ service:
   enabled: true
   type: ClusterIP
   port: 80
-  name: nginx
+  name:
 
 # Activated by setting at least one host
 ingress:

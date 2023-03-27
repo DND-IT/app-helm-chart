@@ -1,10 +1,11 @@
 # App specific configs
 scale:
+  enabled: true
   minReplicas: 1
   maxReplicas: 10
   minAvailable: 50%
-  cpuThresholdPercentage: 60
-  memoryThresholdPercentage: 60
+  cpuThresholdPercentage: 100
+  memoryThresholdPercentage: -1  # -1 means "unset". Use positive integer to enable it.
 
 port: 80
 # ["bundle", "exec", "rake", "db:create", "db:migrate"]
@@ -14,8 +15,8 @@ command: []
 args: []
 env: {}
 
-image_repo: nginx
-image_tag: stable
+image_repo:
+image_tag:
 image_pull_policy: IfNotPresent
 
 probe:
@@ -33,6 +34,7 @@ service:
   enabled: true
   type: ClusterIP
   port: 80
+  name:
 
 # Activated by setting at least one host
 ingress:
@@ -67,7 +69,7 @@ metadata:
       version: ""
 
 topologySpreadConstraints:
-  enable: true
+  enabled: true
   # -- Enable pod [Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
   maxSkew: 1
   # -- The key of node labels.

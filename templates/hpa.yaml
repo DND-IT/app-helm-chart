@@ -1,3 +1,4 @@
+{{- if .Values.scale.enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -7,10 +8,14 @@ spec:
   minReplicas: {{ .Values.scale.minReplicas }}
   maxReplicas: {{ .Values.scale.maxReplicas }}
   metrics:
+    {{- if kindIs "int64" .Values.scale.memoryThresholdPercentage }}
+    {{- if ne .Values.scale.memoryThresholdPercentage -1 }}
     - resource:
         name: memory
         targetAverageUtilization: {{ .Values.scale.memoryThresholdPercentage }}
       type: Resource
+    {{- end }}
+    {{- end }}
     - resource:
         name: cpu
         targetAverageUtilization: {{ .Values.scale.cpuThresholdPercentage }}
@@ -19,3 +24,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ .Release.Name }}
+{{- end }}

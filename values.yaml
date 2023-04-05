@@ -16,7 +16,7 @@ args: []
 env: {}
 
 image_repo:
-image_tag:
+image_tag: stable
 image_pull_policy: IfNotPresent
 
 probe:

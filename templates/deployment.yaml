@@ -17,7 +17,9 @@ metadata:
     tags.datadoghq.com/version: {{ .Values.metadata.labels.datadog.version }}
     {{- end }}
 spec:
+  {{- if not .Values.scale.enabled }} # https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#migrating-deployments-and-statefulsets-to-horizontal-autoscaling
   replicas: {{ .Values.scale.minReplicas }}
+  {{- end }}
   selector:
     matchLabels:
       type: {{ .Chart.Name }}

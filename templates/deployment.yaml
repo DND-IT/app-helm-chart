@@ -142,3 +142,8 @@ spec:
           topologyKey: {{ .Values.topologySpreadConstraints.topologyKey | quote }}
           whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable }}
     {{- end }}
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 0%
+          maxSurge: 25%

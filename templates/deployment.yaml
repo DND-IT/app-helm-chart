@@ -38,6 +38,11 @@ spec:
         {{- if .Values.metadata.labels.datadog.version }}
         tags.datadoghq.com/version: {{ .Values.metadata.labels.datadog.version }}
         {{- end }}
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: {{ .Values.update.maxUnavailable }}
+        maxSurge: {{ .Values.update.maxSurge }}
     spec:
       {{- if .Values.aws_iam_role_arn }}
       serviceAccountName: {{ .Release.Name }}
@@ -144,8 +149,3 @@ spec:
           whenUnsatisfiable: {{ $.Values.topologySpreadConstraints.whenUnsatisfiable }}
         {{- end }}
     {{- end }}
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: {{ .Values.update.maxUnavailable }}
-          maxSurge: {{ .Values.update.maxSurge }}

@@ -133,17 +133,19 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- if .Values.topologySpreadConstraints.enabled }}
-      topologySpreadConstraints: 
-        - labelSelector:
+      topologySpreadConstraints:
+        {{- range .Values.topologySpreadConstraints.topologyKeys }}
+        - topologyKey: {{ . | quote }}
+          labelSelector:
             matchLabels:
-              app: {{ .Release.Name }}
-              type: {{ .Chart.Name }}
-          maxSkew: {{ .Values.topologySpreadConstraints.maxSkew }}
-          topologyKey: {{ .Values.topologySpreadConstraints.topologyKey | quote }}
-          whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable }}
+              app: {{ $.Release.Name }}
+              type: {{ $.Chart.Name }}
+          maxSkew: {{ $.Values.topologySpreadConstraints.maxSkew }}
+          whenUnsatisfiable: {{ $.Values.topologySpreadConstraints.whenUnsatisfiable }}
+        {{- end }}
     {{- end }}
       strategy:
         type: RollingUpdate
         rollingUpdate:
-          maxUnavailable: 0%
-          maxSurge: 25%
+          maxUnavailable: {{ .Values.update.maxUnavailable }}
+          maxSurge: {{ .Values.update.maxSurge }}

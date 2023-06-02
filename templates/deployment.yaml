@@ -24,6 +24,11 @@ spec:
     matchLabels:
       type: {{ .Chart.Name }}
       app: {{ .Release.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.update.maxUnavailable }}
+      maxSurge: {{ .Values.update.maxSurge }}
   template:
     metadata:
       labels:
@@ -110,12 +115,12 @@ spec:
           {{- if .Values.probe.liveness }}
           startupProbe:
             httpGet:
-              path: {{ .Values.probe.liveness | quote }}
+              path: {{ coalesce .Values.probe.startup .Values.probe.liveness | quote }}
               port: http
-            # This means that by default, any application who doesn't respond after 6*20 seconds (2 minutes) gets killed and restarted
+            # This means that by default, any application who doesn't respond after 3*40 seconds (2 minutes) gets killed and restarted
             # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway 
-            failureThreshold: 20
-            periodSeconds: 6
+            failureThreshold: 40
+            periodSeconds: 3
             timeoutSeconds: 2
           {{- end }}
           resources:
@@ -133,12 +138,14 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- if .Values.topologySpreadConstraints.enabled }}
-      topologySpreadConstraints: 
-        - labelSelector:
+      topologySpreadConstraints:
+        {{- range .Values.topologySpreadConstraints.topologyKeys }}
+        - topologyKey: {{ . | quote }}
+          labelSelector:
             matchLabels:
-              app: {{ .Release.Name }}
-              type: {{ .Chart.Name }}
-          maxSkew: {{ .Values.topologySpreadConstraints.maxSkew }}
-          topologyKey: {{ .Values.topologySpreadConstraints.topologyKey | quote }}
-          whenUnsatisfiable: {{ .Values.topologySpreadConstraints.whenUnsatisfiable }}
+              app: {{ $.Release.Name }}
+              type: {{ $.Chart.Name }}
+          maxSkew: {{ $.Values.topologySpreadConstraints.maxSkew }}
+          whenUnsatisfiable: {{ $.Values.topologySpreadConstraints.whenUnsatisfiable }}
+        {{- end }}
     {{- end }}

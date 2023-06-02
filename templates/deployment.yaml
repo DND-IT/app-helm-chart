@@ -120,7 +120,6 @@ spec:
             # This means that by default, any application who doesn't respond after 3*40 seconds (2 minutes) gets killed and restarted
             # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway 
             failureThreshold: 40
-            successThreshold: 2  # Require 2 successful calls to the startup probe before considering it started successfully.
             periodSeconds: 3
             timeoutSeconds: 2
           {{- end }}

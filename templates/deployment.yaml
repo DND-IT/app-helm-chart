@@ -115,12 +115,13 @@ spec:
           {{- if .Values.probe.liveness }}
           startupProbe:
             httpGet:
-              path: {{ .Values.probe.liveness | quote }}
+              path: {{ coalesce .Values.probe.startup .Values.probe.liveness | quote }}
               port: http
-            # This means that by default, any application who doesn't respond after 6*20 seconds (2 minutes) gets killed and restarted
+            # This means that by default, any application who doesn't respond after 3*40 seconds (2 minutes) gets killed and restarted
             # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway 
-            failureThreshold: 20
-            periodSeconds: 6
+            failureThreshold: 40
+            successThreshold: 2  # Require 2 successful calls to the startup probe before considering it started successfully.
+            periodSeconds: 3
             timeoutSeconds: 2
           {{- end }}
           resources:

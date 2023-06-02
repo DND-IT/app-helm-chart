@@ -27,9 +27,10 @@ probe:
   livenessTimeoutSeconds: 2
   readiness: /
   readinessInitialDelaySeconds: 0
-  readinessPeriodSeconds: 6
+  readinessPeriodSeconds: 5
   readinessFailureThreshold: 2
   readinessTimeoutSeconds: 2
+  startup:
 
 service:
   annotations:

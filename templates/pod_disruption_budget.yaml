@@ -1,7 +1,6 @@
-{{- if kindIs "int64" .Values.scale.minReplicas }}
 # by setting minReplica = 1 the PDB won't be deployed.
 # if you want HA then minReplica must be > 1.
-{{- if gt .Values.scale.minReplicas 1 }}
+{{- if gt (int .Values.scale.minReplicas) 1 }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -12,5 +11,4 @@ spec:
     matchLabels:
       type: {{ .Chart.Name }}
       app: {{ .Release.Name }}
-{{- end }}
 {{- end }}

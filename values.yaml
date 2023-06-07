@@ -31,6 +31,7 @@ probe:
   readinessFailureThreshold: 2
   readinessTimeoutSeconds: 2
   startup:
+  startupTimeoutSeconds: 1
 
 service:
   annotations:

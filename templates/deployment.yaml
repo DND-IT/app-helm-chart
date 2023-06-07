@@ -121,7 +121,7 @@ spec:
             # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway 
             failureThreshold: 40
             periodSeconds: 3
-            timeoutSeconds: 2
+            timeoutSeconds: {{ .Values.probe.startupTimeoutSeconds }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -117,15 +117,15 @@ spec:
             httpGet:
               path: {{ coalesce .Values.probe.startup .Values.probe.liveness | quote }}
               port: http
+              {{- if .Values.probe.startupHttpHeaders }}
+              httpHeaders:
+                {{ .Values.probe.startupHttpHeaders | toYaml | nindent 16 }}
+              {{- end }}
             # This means that by default, any application who doesn't respond after 3*40 seconds (2 minutes) gets killed and restarted
             # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway 
             failureThreshold: 40
             periodSeconds: 3
             timeoutSeconds: {{ .Values.probe.startupTimeoutSeconds }}
-            {{- if .Values.probe.startupHttpHeaders }}
-            httpHeaders:
-              {{ .Values.probe.startupHttpHeaders | toYaml | nindent 14 }}
-            {{- end }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

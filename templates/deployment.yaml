@@ -124,7 +124,7 @@ spec:
             timeoutSeconds: {{ .Values.probe.startupTimeoutSeconds }}
             {{- if .Values.probe.startupHttpHeaders }}
             httpHeaders:
-              {{ .Values.probe.startupHttpHeaders }}
+              {{ .Values.probe.startupHttpHeaders | toYaml | nindent 14 }}
             {{- end }}
           {{- end }}
           resources:

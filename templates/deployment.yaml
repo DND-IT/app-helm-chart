@@ -122,6 +122,10 @@ spec:
             failureThreshold: 40
             periodSeconds: 3
             timeoutSeconds: {{ .Values.probe.startupTimeoutSeconds }}
+            {{- if .Values.probe.startupHttpHeaders }}
+            httpHeaders:
+              {{ .Values.probe.startupHttpHeaders }}
+            {{- end }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

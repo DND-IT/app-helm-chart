@@ -16,8 +16,11 @@ spec:
     {{- end }}
     - resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.scale.cpuThresholdPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.scale.cpuThresholdPercentage }}
       type: Resource
+      
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment

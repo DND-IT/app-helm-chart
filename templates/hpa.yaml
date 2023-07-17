@@ -11,7 +11,10 @@ spec:
     {{- if ne (int .Values.scale.memoryThresholdPercentage) -1 }}
     - resource:
         name: memory
-        targetAverageUtilization: {{ .Values.scale.memoryThresholdPercentage }}
+        targetAverageUtilization: 
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.scale.memoryThresholdPercentage }}
       type: Resource
     {{- end }}
     - resource:

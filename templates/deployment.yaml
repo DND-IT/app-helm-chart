@@ -31,6 +31,8 @@ spec:
       maxSurge: {{ .Values.update.maxSurge }}
   template:
     metadata:
+      annotations:
+        {{- toYaml .Values.metadata.annotations | nindent 8 }}
       labels:
         type: {{ .Chart.Name }}
         app: {{ .Release.Name }}

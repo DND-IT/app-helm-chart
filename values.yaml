@@ -68,6 +68,7 @@ tolerations: []
 affinity: {}
 
 metadata:
+  annotations: {}
   labels:
     datadog:
       env: ""

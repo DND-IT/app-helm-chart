@@ -124,7 +124,7 @@ spec:
                 {{ .Values.probe.startupHttpHeaders | toYaml | nindent 16 }}
               {{- end }}
             # This means that by default, any application who doesn't respond after 3*40 seconds (2 minutes) gets killed and restarted
-            # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway 
+            # Can be dangerous if we have slow-starting apps. Can we assume that in 2 minutes all the apps are ready to serve content? Currently anyway
             failureThreshold: 40
             periodSeconds: 3
             timeoutSeconds: {{ .Values.probe.startupTimeoutSeconds }}
@@ -143,15 +143,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if .Values.topologySpreadConstraints.enabled }}
-      topologySpreadConstraints:
-        {{- range .Values.topologySpreadConstraints.topologyKeys }}
-        - topologyKey: {{ . | quote }}
-          labelSelector:
-            matchLabels:
-              app: {{ $.Release.Name }}
-              type: {{ $.Chart.Name }}
-          maxSkew: {{ $.Values.topologySpreadConstraints.maxSkew }}
-          whenUnsatisfiable: {{ $.Values.topologySpreadConstraints.whenUnsatisfiable }}
-        {{- end }}
+    {{- if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints: {{ toYaml .Values.topologySpreadConstraints | nindent 8 }}
     {{- end }}

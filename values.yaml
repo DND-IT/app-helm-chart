@@ -76,17 +76,20 @@ metadata:
       version: ""
 
 topologySpreadConstraints:
-  enabled: true
-  # -- Enable pod [Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/).
-  maxSkew: 1
-  # -- The key of node labels.
-  # See https://kubernetes.io/docs/reference/kubernetes-api/labels-annotations-taints/
-  # All the labels will be considered to try to find the best match
-  topologyKeys:
-    - topology.kubernetes.io/zone
-    - kubernetes.io/hostname
-  whenUnsatisfiable: ScheduleAnyway
-
+  # -- Enable pod [Topology Spread Constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+  # If no constraints are defined, the cluster default is used.
+  # - topologyKey: topology.kubernetes.io/zone
+  #   maxSkew: 5
+  #   whenUnsatisfiable: ScheduleAnyway
+  # - topologyKey: kubernetes.io/hostname
+  #   maxSkew: 3
+  #   whenUnsatisfiable: ScheduleAnyway
+  - topologyKey: topology.kubernetes.io/zone
+    maxSkew: 1
+    whenUnsatisfiable: ScheduleAnyway
+  - topologyKey: kubernetes.io/hostname
+    maxSkew: 1
+    whenUnsatisfiable: ScheduleAnyway
 update:
   maxUnavailable: 0%
   maxSurge: 25%

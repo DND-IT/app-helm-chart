@@ -1,4 +1,4 @@
-{{- if .Values.scale.enabled }}
+{{- if and (.Values.scale.enabled) (ne .Values.scale.minReplicas .Values.scale.maxReplicas)}}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:

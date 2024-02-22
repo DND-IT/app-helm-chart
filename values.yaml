@@ -69,6 +69,7 @@ affinity: {}
 
 metadata:
   annotations: {}
+  podAnnotations: {}
   labels:
     datadog:
       env: ""

@@ -2,7 +2,8 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  annotations: {{ .Values.metadata.hpaAnnotations }}
+  annotations: 
+    {{- toYaml .Values.metadata.hpaAnnotations | nindent 4 }}
   name: {{ .Release.Name }}
 spec:
   minReplicas: {{ .Values.scale.minReplicas }}

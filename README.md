@@ -1,4 +1,5 @@
 # app-helm-chart
+
 Contains the generic helm chart for an application. It is used by Prometheus & Disco project
 
 ## Usage
@@ -32,3 +33,12 @@ For highly-available deployments, the chart allows a minimum availability of 50%
 You can configure it by overriding the `scale.minAvailable` parameter. (e.g. `90%`)
 
 **Note:** PDBs are **only** deployed together with deployments that have more than one replica.
+
+## Tests
+
+There are multiple complementary ways to test the chart before relesing it. We have defined workflow that uses the `chart-testing` (`ct`) library to:
+
+1. Lint the chart
+1. Run template with different `values.yaml` files (`ci` folder)
+
+Further development points could include running a `kind` K8s cluster and deploying the charts to that cluster, adding some more specific K8s linting, ...

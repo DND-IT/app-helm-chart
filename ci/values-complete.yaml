@@ -1,0 +1,46 @@
+image_repo: public.ecr.aws/eks-distro/kubernetes/pause
+image_tag: "3.9"
+metadata:
+  labels:
+    datadog:
+      env: staging-20min
+      service: complete
+      version: abcd123456
+  deploymentAnnotations:
+    downscaler/downscale-period: Mon-Sun 23:00-23:01 Europe/Zurich
+    downscaler/upscale-period: Mon-Sun 06:00-06:01 Europe/Zurich
+  hpaAnnotations:
+    testing: hpaannotations
+  podAnnotations:
+    thisisapod: annotation
+service:
+  name: complete
+ingress:
+  hosts:
+    - www.example.com
+    - doc.example.com
+scale:
+  minReplicas: 2
+  maxReplicas: 15
+  cpuThresholdPercentage: 80
+port: 3000
+probe:
+  liveness: /api/health
+  readiness: /api/health
+resources:
+  requests:
+    cpu: 1
+    memory: 1Gi
+  limits:
+    memory: 2Gi
+env:
+  FEED_BASE_URL: https://www.feed-url.com
+
+nodeSelector:
+  provisioner-group: general
+  kubernetes.io/arch: amd64
+
+tolerations:
+  - key: karpenter.sh/default
+    operator: Exists
+    effect: NoSchedule

@@ -68,7 +68,9 @@ tolerations: []
 affinity: {}
 
 metadata:
-  annotations: {}
+  deploymentAnnotations: {}
+  podAnnotations: {}
+  hpaAnnotations: {}
   labels:
     datadog:
       env: ""

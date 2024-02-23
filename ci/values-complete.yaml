@@ -6,9 +6,13 @@ metadata:
       env: staging-20min
       service: complete
       version: abcd123456
-  annotations:
+  deploymentAnnotations:
     downscaler/downscale-period: Mon-Sun 23:00-23:01 Europe/Zurich
     downscaler/upscale-period: Mon-Sun 06:00-06:01 Europe/Zurich
+  hpaAnnotations:
+    testing: hpaannotations
+  podAnnotations:
+    thisisapod: annotation
 service:
   name: complete
 ingress:

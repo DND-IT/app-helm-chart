@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   annotations:
-    {{- toYaml .Values.metadata.annotations | nindent 4 }}
+    {{- toYaml .Values.metadata.deploymentAnnotations | nindent 4 }}
   labels:
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     heritage: {{ .Release.Service }}

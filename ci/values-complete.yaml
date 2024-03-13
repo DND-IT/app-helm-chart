@@ -16,6 +16,7 @@ metadata:
 service:
   name: complete
 ingress:
+  className: alb
   hosts:
     - www.example.com
     - doc.example.com

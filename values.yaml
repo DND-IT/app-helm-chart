@@ -43,6 +43,7 @@ service:
 
 # Activated by setting at least one host
 ingress:
+  className:
   annotations:
   hosts: []
   paths: ["/"]

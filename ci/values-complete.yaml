@@ -45,3 +45,6 @@ tolerations:
   - key: karpenter.sh/default
     operator: Exists
     effect: NoSchedule
+
+secrets:
+  database: true

@@ -96,3 +96,6 @@ topologySpreadConstraints:
 update:
   maxUnavailable: 0%
   maxSurge: 25%
+
+secrets:
+  database: false

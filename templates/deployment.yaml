@@ -87,11 +87,26 @@ spec:
                   fieldPath: metadata.labels['tags.datadoghq.com/version']
             {{- end }}
             {{- if .Values.secrets.database }}
-            - name: EXTERNAL_DB_URL
+            - name: DB_ENDPOINT
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.service.name }}-database-credentials
-                  key: DB_URL
+                  key: DB_ENDPOINT
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.service.name }}-database-credentials
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.service.name }}-database-credentials
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.service.name }}-database-credentials
+                  key: DB_PASSWORD
             {{- end }}
           {{- if .Values.env }}
           {{- range $key, $val := .Values.env }}

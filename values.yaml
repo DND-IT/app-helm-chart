@@ -98,6 +98,7 @@ update:
   maxSurge: 25%
 
 externalSecrets:
+  refreshInterval: 5m
   clusterSecretStore: aws-secretsmanager
   # secret names that should be fetched and made available to the Pods
   secretNames: []

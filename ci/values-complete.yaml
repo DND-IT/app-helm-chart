@@ -47,4 +47,5 @@ tolerations:
     effect: NoSchedule
 
 externalSecrets:
-  - complete/databaseCredentials
+  secretNames:
+    - "complete/databaseCredentials"

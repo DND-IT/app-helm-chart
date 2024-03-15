@@ -92,12 +92,13 @@ spec:
               value: {{ $val | quote }}
             {{- end }}
             {{- end }}
-          {{- if gt (len .Values.externalSecrets) 0 }}
+          {{- if gt (len .Values.externalSecrets.secretNames) 0 }}
           envFrom:
-            {{- range .Values.externalSecrets }}
+            {{- range .Values.externalSecrets.secretNames }}
             - secretRef:
-                name: {{ . }}
+                name: {{ . | replace "/" "-" }}
             {{- end }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.port }}

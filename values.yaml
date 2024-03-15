@@ -97,7 +97,7 @@ update:
   maxUnavailable: 0%
   maxSurge: 25%
 
-# list of secret names that should be fetched from SecretsManager and made available to the Pods
 externalSecrets:
   clusterSecretStore: aws-secretsmanager
+  # secret names that should be fetched and made available to the Pods
   secretNames: []

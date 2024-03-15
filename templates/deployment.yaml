@@ -67,7 +67,7 @@ spec:
           {{- end }}
           env:
             - name: PORT
-              value: {{ .Values.port | quote  }}
+              value: {{ .Values.port | quote }}
             {{- if .Values.metadata.labels.datadog.env }}
             - name: DD_ENV
               valueFrom:
@@ -86,34 +86,18 @@ spec:
                 fieldRef:
                   fieldPath: metadata.labels['tags.datadoghq.com/version']
             {{- end }}
-            {{- if .Values.secrets.database }}
-            - name: DB_ENDPOINT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.service.name }}-database-credentials
-                  key: DB_ENDPOINT
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.service.name }}-database-credentials
-                  key: DB_NAME
-            - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.service.name }}-database-credentials
-                  key: DB_USERNAME
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.service.name }}-database-credentials
-                  key: DB_PASSWORD
-            {{- end }}
-          {{- if .Values.env }}
-          {{- range $key, $val := .Values.env }}
+            {{- if .Values.env }}
+            {{- range $key, $val := .Values.env }}
             - name: {{ $key }}
               value: {{ $val | quote }}
-          {{- end }}
-          {{- end }}
+            {{- end }}
+            {{- end }}
+          {{- if gt (len .Values.externalSecrets) 0 }}
+          envFrom:
+            {{- range .Values.externalSecrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.port }}

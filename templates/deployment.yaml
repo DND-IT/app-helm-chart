@@ -67,7 +67,7 @@ spec:
           {{- end }}
           env:
             - name: PORT
-              value: {{ .Values.port | quote  }}
+              value: {{ .Values.port | quote }}
             {{- if .Values.metadata.labels.datadog.env }}
             - name: DD_ENV
               valueFrom:
@@ -86,11 +86,18 @@ spec:
                 fieldRef:
                   fieldPath: metadata.labels['tags.datadoghq.com/version']
             {{- end }}
-          {{- if .Values.env }}
-          {{- range $key, $val := .Values.env }}
+            {{- if .Values.env }}
+            {{- range $key, $val := .Values.env }}
             - name: {{ $key }}
               value: {{ $val | quote }}
-          {{- end }}
+            {{- end }}
+            {{- end }}
+          {{- with .Values.externalSecrets.secretNames }}
+          envFrom:
+            {{- range . }}
+            - secretRef:
+                name: {{ . | lower | replace "/" "-" }}
+            {{- end }}
           {{- end }}
           ports:
             - name: http

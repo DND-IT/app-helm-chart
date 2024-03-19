@@ -45,3 +45,7 @@ tolerations:
   - key: karpenter.sh/default
     operator: Exists
     effect: NoSchedule
+
+externalSecrets:
+  secretNames:
+    - "complete/databaseCredentials"

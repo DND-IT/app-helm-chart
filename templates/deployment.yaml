@@ -92,9 +92,9 @@ spec:
               value: {{ $val | quote }}
             {{- end }}
             {{- end }}
-          {{- if gt (len .Values.externalSecrets.secretNames) 0 }}
+          {{- with .Values.externalSecrets.secretNames }}
           envFrom:
-            {{- range .Values.externalSecrets.secretNames }}
+            {{- range . }}
             - secretRef:
                 name: {{ . | lower | replace "/" "-" }}
             {{- end }}

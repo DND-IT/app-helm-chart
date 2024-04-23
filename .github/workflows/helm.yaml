@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - lint-test
-      - lint-template-test
+      - template-test
     strategy:
       matrix:
         k8s:

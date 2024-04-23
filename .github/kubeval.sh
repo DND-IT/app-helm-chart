@@ -29,12 +29,12 @@ apis=("${apis[@]}" --api-versions batch/v1/CronJob)
 
 # validate charts
 for CHART_DIR in ${CHART_DIRS}; do
-  (cd "charts/${CHART_DIR}"; helm dependency build)
-  for VALUES_FILE in charts/"${CHART_DIR}"/ci/*.yaml; do
+  (cd "${CHART_DIR}"; helm dependency build)
+  for VALUES_FILE in "${CHART_DIR}"/ci/*.yaml; do
     helm template \
       "${apis[@]}" \
       --values "${VALUES_FILE}" \
-      charts/"${CHART_DIR}" | kubeval \
+      "${CHART_DIR}" | kubeval \
         --strict \
         --ignore-missing-schemas \
         --kubernetes-version "${KUBERNETES_VERSION#v}" \

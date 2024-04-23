@@ -75,3 +75,70 @@ jobs:
         env:
           KUBERNETES_VERSION: ${{ matrix.k8s }}
         run: .github/kubeval.sh
+
+  install-chart:
+    name: install-chart
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.repository_owner != github.event.pull_request.head.repo.owner.login || !startsWith(github.event.pull_request.head.ref, 'renovate/') }}
+    needs:
+      - lint-test
+      - template-test
+      - kubeval-chart
+    strategy:
+      matrix:
+        k8s:
+          # from https://hub.docker.com/r/kindest/node/tags
+          - v1.28.7 # renovate: kindest
+          - v1.29.2 # renovate: kindest
+          # - v1.30.0 # renovate: kindest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
+        with:
+          fetch-depth: 0
+
+      - name: Create kind ${{ matrix.k8s }} cluster
+        uses: helm/kind-action@99576bfa6ddf9a8e612d83b513da5a75875caced # v1.9.0
+        with:
+          node_image: kindest/node:${{ matrix.k8s }}
+          version: v0.22.0 # renovate: datasource=github-releases depName=kind packageName=kubernetes-sigs/kind
+
+      - name: Install chart-testing
+        uses: helm/chart-testing-action@e6669bcd63d7cb57cb4380c33043eebe5d111992 # v2.6.1
+        with:
+          version: v3.10.1 # renovate: datasource=github-releases depName=chart-testing packageName=helm/chart-testing
+
+      - name: Run chart install
+        run: ct install --config .github/ct.yaml
+
+  # Catch-all required check for test matrix
+  test-success:
+    needs:
+      - lint-test
+      - template-test
+      - kubeval-chart
+      - install-chart
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    if: always()
+    steps:
+      - name: Fail for failed or cancelled lint-chart
+        if: |
+          needs.lint-chart.result == 'failure' ||
+          needs.lint-chart.result == 'cancelled'
+        run: exit 1
+      - name: Fail for failed or cancelled lint-docs
+        if: |
+          needs.lint-docs.result == 'failure' ||
+          needs.lint-docs.result == 'cancelled'
+        run: exit 1
+      - name: Fail for failed or cancelled kubeval-chart
+        if: |
+          needs.kubeval-chart.result == 'failure' ||
+          needs.kubeval-chart.result == 'cancelled'
+        run: exit 1
+      - name: Fail for failed or cancelled install-chart
+        if: |
+          needs.install-chart.result == 'failure' ||
+          needs.install-chart.result == 'cancelled'
+        run: exit 1

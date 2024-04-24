@@ -37,7 +37,7 @@ jobs:
       matrix:
         file:
           - name: ci/values-empty.yaml
-          - name: ci/values-minimal.yaml
+          - name: ci/minimal-values.yaml
           - name: ci/values-complete.yaml
     steps:
       - name: Checkout

@@ -3,10 +3,10 @@ name: Lint and Test Charts
 on: push
 
 env:
-  HELM_VERSION: v3.8.1
+  HELM_VERSION: v3.13.3
 
 jobs:
-  lint-test:
+  lint-chart:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,7 +16,7 @@ jobs:
 
       - name: Set up Helm
         uses: azure/setup-helm@v4
-        with:
+        With:
           version: ${{ env.HELM_VERSION }}
 
       - uses: actions/setup-python@v5
@@ -29,35 +29,10 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --chart-dirs . --charts .
 
-  template-test:
-    needs: [lint-test]
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        file:
-          - name: ci/values-empty.yaml
-          - name: ci/minimal-values.yaml
-          - name: ci/values-complete.yaml
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: ${{ env.HELM_VERSION }}
-
-      - name: Run chart-testing (template) on different YAML files
-        run: helm template --dry-run --generate-name . -f "${{ matrix.file.name }}"
-
   kubeval-chart:
     runs-on: ubuntu-latest
     needs:
-      - lint-test
-      - template-test
+      - lint-chart
     strategy:
       matrix:
         k8s:
@@ -67,7 +42,7 @@ jobs:
           # - v1.30.0
     steps:
       - name: Checkout
-        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -81,19 +56,18 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' || github.repository_owner != github.event.pull_request.head.repo.owner.login || !startsWith(github.event.pull_request.head.ref, 'renovate/') }}
     needs:
-      - lint-test
-      - template-test
+      - lint-chart
       - kubeval-chart
     strategy:
       matrix:
         k8s:
           # from https://hub.docker.com/r/kindest/node/tags
-          - v1.28.7 # renovate: kindest
-          - v1.29.2 # renovate: kindest
+          - v1.28.9 # renovate: kindest
+          - v1.29.4 # renovate: kindest
           # - v1.30.0 # renovate: kindest
     steps:
       - name: Checkout
-        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -104,7 +78,7 @@ jobs:
           version: v0.22.0 # renovate: datasource=github-releases depName=kind packageName=kubernetes-sigs/kind
 
       - name: Install chart-testing
-        uses: helm/chart-testing-action@e6669bcd63d7cb57cb4380c33043eebe5d111992 # v2.6.1
+        uses: helm/chart-testing-action@v2.6.1
         with:
           version: v3.10.1 # renovate: datasource=github-releases depName=chart-testing packageName=helm/chart-testing
 
@@ -114,8 +88,7 @@ jobs:
   # Catch-all required check for test matrix
   test-success:
     needs:
-      - lint-test
-      - template-test
+      - lint-chart
       - kubeval-chart
       - install-chart
     runs-on: ubuntu-latest

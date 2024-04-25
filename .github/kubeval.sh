@@ -1,4 +1,5 @@
 #!/bin/bash
+# Script used in github workflow to validate k8s configuration files
 
 mkdir -p ./.bin
 export PATH="./.bin:$PATH"

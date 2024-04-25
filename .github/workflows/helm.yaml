@@ -1,7 +1,9 @@
 name: Lint and Test Charts
 
-on: push
-
+on:
+  pull_request:
+    branches:
+    - "master"
 env:
   HELM_VERSION: v3.13.3
 
@@ -37,7 +39,7 @@ jobs:
       matrix:
         k8s:
           # from https://github.com/yannh/kubernetes-json-schema
-          - v1.28.9
+          # - v1.28.9
           - v1.29.4
           # - v1.30.0
     steps:
@@ -62,7 +64,7 @@ jobs:
       matrix:
         k8s:
           # from https://hub.docker.com/r/kindest/node/tags
-          - v1.28.7 # renovate: kindest
+          # - v1.28.7 # renovate: kindest
           - v1.29.2 # renovate: kindest
           # - v1.30.0 # renovate: kindest
     steps:

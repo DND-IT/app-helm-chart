@@ -9,13 +9,16 @@ Reference the release of the chart you want to deploy in terraform
 ```hcl
 resource "helm_release" "app" {
   chart     = "https://github.com/DND-IT/app-helm-chart/archive/3.3.2.tar.gz"
-  
   values = [
     templatefile("values.yaml")
   ]
   set {
     name  = "service.name"
     value = "myname-myenv"
+  }
+  set {
+    name  = "scale.enabled"
+    value = "false"
   }
 }
 ```
@@ -36,9 +39,9 @@ You can configure it by overriding the `scale.minAvailable` parameter. (e.g. `90
 
 ## Tests
 
-There are multiple complementary ways to test the chart before relesing it. We have defined workflow that uses the `chart-testing` (`ct`) library to:
+On PR, a github workflow is run which validates and deploys the app-helm-chart on a k8s cluster using
+various value files (take files ending with `-values.yaml` in the [ci directory](ci)). Workflow is copied from <https://github.com/renovatebot/helm-charts>.
 
-1. Lint the chart
-1. Run template with different `values.yaml` files (`ci` folder)
+## Releases
 
-Further development points could include running a `kind` K8s cluster and deploying the charts to that cluster, adding some more specific K8s linting, ...
+No automatic release workflow. Once a change is merged on `master` and new `tag` / `release` have to be created in the [github console](https://github.com/DND-IT/app-helm-chart/releases)

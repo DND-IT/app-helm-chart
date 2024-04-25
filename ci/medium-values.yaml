@@ -1,9 +1,8 @@
+# To deploy an app with hpa. resources.requests are mandatory for the hpa to work
 image_repo: jmalloc/echo-server
 image_tag: "0.3.6"
 service:
-  name: echo-minimal
-scale:
-  enabled: false
+  name: medium
 port: 8080
 resources:
   requests:

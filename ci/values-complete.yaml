@@ -1,3 +1,4 @@
+# Complete example. To modify to make it works in the workflow because of the secrets
 image_repo: public.ecr.aws/eks-distro/kubernetes/pause
 image_tag: "3.9"
 metadata:

@@ -62,8 +62,8 @@ jobs:
       matrix:
         k8s:
           # from https://hub.docker.com/r/kindest/node/tags
-          - v1.28.9 # renovate: kindest
-          - v1.29.3 # renovate: kindest
+          - v1.28.7 # renovate: kindest
+          - v1.29.2 # renovate: kindest
           # - v1.30.0 # renovate: kindest
     steps:
       - name: Checkout

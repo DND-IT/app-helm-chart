@@ -1,13 +1,4 @@
 image_repo: jmalloc/echo-server
-image_tag: "0.3.6"
+image_tag: latest
 service:
-  name: echo-minimal
-scale:
-  enabled: false
-port: 8080
-resources:
-  requests:
-    cpu: 0.5
-    memory: 256Mi
-  limits:
-    memory: 1Gi
+  name: empty

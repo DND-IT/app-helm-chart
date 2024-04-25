@@ -1,4 +1,0 @@
-image_repo: jmalloc/echo-server
-image_tag: latest
-service:
-  name: empty

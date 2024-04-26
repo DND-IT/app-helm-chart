@@ -39,8 +39,8 @@ You can configure it by overriding the `scale.minAvailable` parameter. (e.g. `90
 
 ## Tests
 
-On PR, a github workflow is run which validates and deploys the app-helm-chart on a k8s cluster using
-various value files (take files ending with `-values.yaml` in the [ci directory](ci)). Workflow is copied from <https://github.com/renovatebot/helm-charts>.
+On PR, a github workflow is run which tests the chart with `*.yaml` value files in the [ci directory](ci). And it will try to deploys the app-helm-chart on a k8s cluster using
+various `*-value.yaml` value files in the [ci directory](ci)). Workflow is copied from <https://github.com/renovatebot/helm-charts>.
 
 ## Releases
 

@@ -1,0 +1,119 @@
+name: Lint and Test Charts
+
+on:
+  pull_request:
+    branches:
+    - "master"
+env:
+  HELM_VERSION: v3.13.3
+
+jobs:
+  lint-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.7
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.6.1
+
+      - name: Run chart-testing (lint)
+        run: ct lint --chart-dirs . --charts .
+
+  kubeval-chart:
+    runs-on: ubuntu-latest
+    needs:
+      - lint-chart
+    strategy:
+      matrix:
+        k8s:
+          # from https://github.com/yannh/kubernetes-json-schema
+          # - v1.28.9
+          - v1.29.4
+          # - v1.30.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run kubeval
+        env:
+          KUBERNETES_VERSION: ${{ matrix.k8s }}
+        run: .github/kubeval.sh
+
+  install-chart:
+    name: install-chart
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.repository_owner != github.event.pull_request.head.repo.owner.login || !startsWith(github.event.pull_request.head.ref, 'renovate/') }}
+    needs:
+      - lint-chart
+      - kubeval-chart
+    strategy:
+      matrix:
+        k8s:
+          # from https://hub.docker.com/r/kindest/node/tags
+          # - v1.28.7 # renovate: kindest
+          - v1.29.2 # renovate: kindest
+          # - v1.30.0 # renovate: kindest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create kind ${{ matrix.k8s }} cluster
+        uses: helm/kind-action@99576bfa6ddf9a8e612d83b513da5a75875caced # v1.9.0
+        with:
+          node_image: kindest/node:${{ matrix.k8s }}
+          version: v0.22.0 # renovate: datasource=github-releases depName=kind packageName=kubernetes-sigs/kind
+
+      - name: Install chart-testing
+        uses: helm/chart-testing-action@v2.6.1
+        with:
+          version: v3.10.1 # renovate: datasource=github-releases depName=chart-testing packageName=helm/chart-testing
+
+      - name: Run chart install
+        run: ct install --chart-dirs . --charts .
+
+  # Catch-all required check for test matrix
+  test-success:
+    needs:
+      - lint-chart
+      - kubeval-chart
+      - install-chart
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    if: always()
+    steps:
+      - name: Fail for failed or cancelled lint-chart
+        if: |
+          needs.lint-chart.result == 'failure' ||
+          needs.lint-chart.result == 'cancelled'
+        run: exit 1
+      - name: Fail for failed or cancelled lint-docs
+        if: |
+          needs.lint-docs.result == 'failure' ||
+          needs.lint-docs.result == 'cancelled'
+        run: exit 1
+      - name: Fail for failed or cancelled kubeval-chart
+        if: |
+          needs.kubeval-chart.result == 'failure' ||
+          needs.kubeval-chart.result == 'cancelled'
+        run: exit 1
+      - name: Fail for failed or cancelled install-chart
+        if: |
+          needs.install-chart.result == 'failure' ||
+          needs.install-chart.result == 'cancelled'
+        run: exit 1

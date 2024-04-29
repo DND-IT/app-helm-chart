@@ -1,0 +1,7 @@
+# Minimum app deployment without hpa
+image_repo: jmalloc/echo-server
+image_tag: latest
+service:
+  name: minimal
+scale:
+  enabled: false

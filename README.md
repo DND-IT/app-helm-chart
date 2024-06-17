@@ -1,4 +1,8 @@
-# app-helm-chart
+# app-helm-chart [Archived]
+
+**This repository is archived and no longer maintained. All helm charts have been moved to the [DND-IT/helm-charts](https://github.com/DND-IT/helm-charts) repository.**
+
+You can find how to update to the new repository [here](https://github.com/DND-IT/helm-charts/blob/main/charts/app/README.md)
 
 Contains the generic helm chart for an application. It is used by Prometheus & Disco project
 
